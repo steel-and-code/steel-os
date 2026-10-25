@@ -1,0 +1,89 @@
+#!/usr/bin/bash
+# Steel OS: "AI coding setup" on the Portal's Developer tab (T, 2026-10-25):
+# VS Code with Claude Code, set up the way it works on Windows.
+#
+#   steel-os-ai-coding install     VS Code, the Claude Code command and its VS Code extension
+#   steel-os-ai-coding uninstall   remove them again (settings and projects stay)
+#   steel-os-ai-coding status      prints "installed" or "not-installed"
+#
+# Why not the VS Code on Steel Apps: that is the Flathub one, which runs sealed
+# off from the system, so its terminal and Claude Code can't see git, ripgrep,
+# the Brew tools or the claude command. This installs the normal VS Code from
+# Universal Blue's Brew tap (visual-studio-code-linux: a start-menu entry and
+# the code command, updated with the other Brew tools), plus GitHub's gh.
+# Claude Code comes from Anthropic's own installer, which puts the claude
+# command in ~/.local/bin and keeps it up to date by itself.
+
+set -uo pipefail
+
+BREW_BIN=/home/linuxbrew/.linuxbrew/bin/brew
+CLAUDE="$HOME/.local/bin/claude"
+CASK=visual-studio-code-linux
+EXTENSION=anthropic.claude-code
+
+brew_env() {
+    [[ -x "$BREW_BIN" ]] || { echo "Homebrew isn't set up on this computer yet. Restart once, then try again." >&2; exit 1; }
+    eval "$("$BREW_BIN" shellenv)"
+}
+
+installed() {
+    [[ -x "$BREW_BIN" ]] || return 1
+    eval "$("$BREW_BIN" shellenv)"
+    brew list --cask "$CASK" >/dev/null 2>&1 && [[ -x "$CLAUDE" ]]
+}
+
+case "${1:-}" in
+    status)
+        installed && echo installed || echo not-installed
+        ;;
+    install)
+        brew_env
+        echo "== 1 of 4: VS Code"
+        brew trust ublue-os/tap 2>/dev/null; brew tap ublue-os/tap || exit 1
+        brew install --cask "$CASK" || exit 1
+        echo
+        echo "== 2 of 4: GitHub's gh command"
+        brew install gh || echo "(gh didn't install; you can add it later from Developer setup.)"
+        echo
+        echo "== 3 of 4: Claude Code (the claude command)"
+        if [[ -x "$CLAUDE" ]]; then
+            echo "Already installed; it keeps itself up to date."
+        else
+            curl -fsSL https://claude.ai/install.sh | bash || exit 1
+        fi
+        echo
+        echo "== 4 of 4: the Claude Code extension in VS Code"
+        code --install-extension "$EXTENSION" || exit 1
+        # git needs a name and email once before the first commit.
+        if [[ -z "$(git config --global user.name 2>/dev/null)" ]]; then
+            echo
+            read -r -p "Your name for git commits (Enter to skip): " name
+            read -r -p "Your email for git commits (Enter to skip): " email
+            [[ -n "$name" ]] && git config --global user.name "$name"
+            [[ -n "$email" ]] && git config --global user.email "$email"
+        fi
+        cat <<'EOF'
+
+Done. Next steps, once each:
+  1. Open Visual Studio Code from the start menu (not the Flathub one from
+     Steel Apps). Click the Claude icon and sign in with your claude.ai
+     account (Pro or Max). Your claude.ai connectors, such as Jira, come
+     with it.
+  2. To use Claude in a terminal too: open Konsole and type  claude
+  3. For GitHub: in Konsole, type  gh auth login  and follow the steps.
+EOF
+        ;;
+    uninstall)
+        brew_env
+        brew uninstall --cask "$CASK" || true
+        if [[ -x "$CLAUDE" || -L "$CLAUDE" ]]; then
+            rm -f "$CLAUDE"
+            rm -rf "$HOME/.local/share/claude"
+        fi
+        echo "VS Code and the claude command are removed. Your projects, your VS Code settings (~/.config/Code) and Claude settings (~/.claude) are kept."
+        ;;
+    *)
+        echo "usage: steel-os-ai-coding install|uninstall|status" >&2
+        exit 2
+        ;;
+esac

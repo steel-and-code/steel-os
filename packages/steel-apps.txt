@@ -54,7 +54,7 @@ io.github.berarma.Oversteer | Oversteer | Racing wheels: rotation, force feedbac
 # where GNOME Boxes stalled on an NVIDIA laptop in testing. The virtual
 # machine service it needs is built into the image. Antigravity, which is not
 # on Flathub, is added here by make-portal.py and installed with Brew.
-com.visualstudio.code | VS Code | Code editor | Developer
+com.visualstudio.code | VS Code (sandboxed) | Code editor from Flathub. Sealed off: its terminal and Claude Code can't use git or the other tools on this PC; for coding with Claude, choose AI coding setup | Developer
 org.wezfurlong.wezterm | WezTerm | Alternative terminal (Konsole is the default) | Developer
 org.virt_manager.virt-manager | Virtual Machine Manager | Run other operating systems in a window (virtual machines) | Developer
 org.gnome.Boxes | GNOME Boxes | Run other operating systems in a window (simpler; less reliable on NVIDIA laptops) | Developer
