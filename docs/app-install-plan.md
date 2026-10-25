@@ -147,14 +147,14 @@ Bazzite's system image is read-only, so developer tools do not go in the
 image either. Bazzite ships Homebrew and Distrobox for this, which is how
 S&C would work:
 
-- `packages/brew.txt`: tools installed through Homebrew on request (git, jq,
-  ripgrep, fd, lazygit, lazydocker, github-cli, mise for Python and Node
-  versions, docker-compose).
+- `packages/brew.txt`: tools installed through Homebrew on request (jq, fd,
+  lazygit, lazydocker, github-cli, mise for Python and Node versions,
+  docker-compose). git and ripgrep are in the image itself (`image.txt`).
 - Docker: Bazzite ships Podman, which runs Docker-style containers and can
   provide a `docker` command. Docker Engine itself can be added to the image
   if Forge needs it.
-- A "developer setup" entry in the Steel Apps list runs the Homebrew installs
-  in one go.
+- The "Developer setup" entry at the top of the Portal's Developer tab runs the
+  Homebrew installs in one go (built 2026-10-24, `build_files/portal/make-portal.py`).
 
 ---
 
@@ -210,7 +210,7 @@ unusual.
 2. **Steel Apps section in Bazzite Portal** (new, phase 4): add the
    `steel-apps.txt` entries as a section at the top of Bazzite Portal's
    Install Applications tab, rename the window to Steel OS, keep the rest.
-3. **Developer setup entry** (new, phase 4): Homebrew installs from `brew.txt`.
+3. **Developer setup entry** (phase 4, done 2026-10-24): Homebrew installs from `brew.txt`.
 4. **remove.txt after first boot**: list and remove what
    we do not want.
 5. **Forge packaging**.

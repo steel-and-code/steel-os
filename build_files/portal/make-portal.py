@@ -219,6 +219,26 @@ EXTRAS = {
     )],
 }
 
+# Developer setup: the command-line tools in packages/brew.txt, installed with
+# Brew in one click (asked for in a report, 2026-10-24). Shown as installed
+# when every one of them is; installing again adds any that are missing.
+BREW_FILE = os.path.join(os.path.dirname(os.path.abspath(APPS_FILE)), "brew.txt")
+BREW_TOOLS = [l.strip() for l in open(BREW_FILE, encoding="utf-8")
+              if l.strip() and not l.strip().startswith("#")] if os.path.exists(BREW_FILE) else []
+if BREW_TOOLS:
+    tools = " ".join(shlex.quote(t) for t in BREW_TOOLS)
+    EXTRAS["Developer"].insert(0, action(
+        "developer-setup", "Developer setup",
+        "Developer · The usual command-line tools in one click, installed with Brew: "
+        + ", ".join(BREW_TOOLS) + ". git, ripgrep and Neovim are already built in.",
+        status_script=f"( {BREW}brew list --formula {tools} ) >/dev/null 2>&1 && echo install || echo uninstall",
+        options=[
+            ("install", "Install the developer tools", BREW + f"brew install {tools}" + PAUSE),
+            ("uninstall", "Remove the developer tools", BREW + f"brew uninstall {tools}" + PAUSE),
+        ],
+    ))
+    print(f"Steel OS Portal: Developer setup lists {len(BREW_TOOLS)} Brew tools")
+
 # Steel & Code Forge (STEEL-25): a one-click entry once its public package
 # address is in packages/forge-source.txt; hidden while that file is empty.
 FORGE_SOURCE = os.path.join(os.path.dirname(os.path.abspath(APPS_FILE)), "forge-source.txt")
