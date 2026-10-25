@@ -1,5 +1,7 @@
-# Steel OS: developer tools installed through Homebrew on request
-# (the "Developer setup" entry in the Steel Apps list). Bazzite ships Homebrew.
+# Steel OS: developer tools installed through Homebrew on request. Planned:
+# a "Developer setup" entry in the Steel Apps list (docs/app-install-plan.md,
+# phase 4); not built yet. Bazzite ships Homebrew. git and ripgrep are also in
+# the image itself (image.txt).
 # One formula per line.
 
 git

@@ -96,6 +96,11 @@ inotify-tools
 
 # Developer tools built in (Katana test, Rodger): Neovim, with the nvim command.
 neovim
+# git and ripgrep (the rg command), asked for in a report (2026-10-24). Bazzite
+# already ships git; listing it keeps it if that ever changes. Other command-line
+# tools stay a choice, through Homebrew (Bazzite ships it; see brew.txt).
+git
+ripgrep
 
 # Steel & Code Forge one-click install (STEEL-25): its Python environment
 # and the password-store command that keeps its OpenRouter key.
