@@ -1,0 +1,31 @@
+#!/usr/bin/bash
+# Steel OS: before each update (Update now and the Tuesday one), pick up a new
+# version that was downloaded but never started.
+#
+# A downloaded update waits for the next restart and is put in place while
+# the PC shuts down. If the PC goes off without shutting down (battery empty,
+# power button held, a freeze), that waiting update is lost, but its files
+# stay on disk. From then on the updater's first question, "bootc upgrade
+# --check", answers "No changes in: ..." (the files are already here), so it
+# skips the system update every time and the PC stays on the old version
+# until a newer one comes out (T's laptop, 2026-10-25: 1.1.8 was downloaded,
+# the laptop went off 11 minutes later, and Update now never took it again).
+#
+# So: when the check says "No changes" and nothing is waiting for a restart,
+# run "bootc upgrade" itself. That compares with the version actually
+# running, sets the downloaded one up again in about a minute, and does
+# nothing when the PC really is up to date.
+
+set -uo pipefail
+
+command -v bootc >/dev/null 2>&1 || exit 0
+
+staged="$(rpm-ostree status --json 2>/dev/null | jq -r '[.deployments[] | select(.staged == true)] | length' 2>/dev/null)"
+[[ "${staged:-0}" == 0 ]] || { echo "Steel OS: an update is already waiting for a restart."; exit 0; }
+
+check="$(bootc upgrade --check 2>&1)" || { echo "Steel OS: update check failed; the updater tries itself."; exit 0; }
+if grep -q "No changes in:" <<< "$check"; then
+    echo "Steel OS: the newest version is already downloaded; making sure it starts at the next restart."
+    bootc upgrade --quiet || echo "Steel OS: setting it up failed; the updater tries itself."
+fi
+exit 0
