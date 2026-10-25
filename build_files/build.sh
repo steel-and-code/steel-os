@@ -717,7 +717,8 @@ fi
 # waiting shows "Restart to finish updating"; only signed Steel OS images are
 # accepted; and an urgent fix can reach PCs the same day.
 chmod 0755 /usr/libexec/steel-os-update-notice /usr/libexec/steel-os-signed-updates \
-    /usr/libexec/steel-os-urgent-update /usr/libexec/steel-os-night-restart /usr/libexec/steel-os-update-now
+    /usr/libexec/steel-os-urgent-update /usr/libexec/steel-os-night-restart /usr/libexec/steel-os-update-now \
+    /usr/libexec/steel-os-update-retry
 systemctl enable steel-os-app-updates.timer steel-os-signed-updates.service \
     steel-os-urgent-update.timer steel-os-night-restart.timer
 systemctl --global enable steel-os-app-updates.timer steel-os-update-notice.timer steel-os-night-restart.timer
