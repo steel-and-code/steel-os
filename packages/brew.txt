@@ -1,10 +1,11 @@
-# Steel OS: developer tools installed through Homebrew on request
-# (the "Developer setup" entry in the Steel Apps list). Bazzite ships Homebrew.
+# Steel OS: developer tools installed through Homebrew on request: the
+# "Developer setup" entry on the Portal's Developer tab installs all of them
+# in one click (build_files/portal/make-portal.py reads this file). Bazzite
+# ships Homebrew. git and ripgrep are not here: they are in the image itself
+# (image.txt).
 # One formula per line.
 
-git
 jq
-ripgrep
 fd
 lazygit
 lazydocker
