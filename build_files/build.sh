@@ -563,7 +563,7 @@ STEEL_OS_NVIDIA="$([[ -n "$variant" ]] && echo 1 || echo 0)" python3 /ctx/portal
 # Steel & Code Forge one-click install (STEEL-25): the installer script, the
 # package address it uses, and a check that what it needs is in the image.
 install -D -m 0644 /ctx/packages/forge-source.txt /usr/share/steel-os/forge-source
-chmod 0755 /usr/libexec/steel-os-forge
+chmod 0755 /usr/libexec/steel-os-forge /usr/libexec/steel-os-ai-coding
 python3 -c 'import sys, venv, ensurepip; sys.exit(0 if sys.version_info >= (3, 11) else 1)'     || { echo "Steel OS: Python 3.11+ with venv is needed for Forge" >&2; exit 1; }
 echo "Steel OS: Forge prerequisites present ($(python3 --version), curl, tar)"
 chmod 0755 /usr/libexec/steel-os-setup /usr/libexec/steel-os-help /usr/libexec/steel-os-help-server

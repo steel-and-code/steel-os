@@ -239,6 +239,20 @@ if BREW_TOOLS:
     ))
     print(f"Steel OS Portal: Developer setup lists {len(BREW_TOOLS)} Brew tools")
 
+# AI coding setup (T, 2026-10-25): the normal VS Code (not the sandboxed
+# Flathub one) with Claude Code and its extension, right after Developer setup.
+EXTRAS["Developer"].insert(1 if BREW_TOOLS else 0, action(
+    "ai-coding-setup", "AI coding setup: VS Code with Claude Code",
+    "Developer · VS Code set up for coding with Claude, like on Windows: the full VS Code (it can use git, "
+    "the terminal and every tool on this PC), the Claude Code extension, the claude command and GitHub's gh. "
+    "Sign in with your claude.ai account afterwards. One click, installed with Brew.",
+    status_script="/usr/libexec/steel-os-ai-coding status | grep -qx installed && echo install || echo uninstall",
+    options=[
+        ("install", "Install VS Code with Claude Code", "/usr/libexec/steel-os-ai-coding install" + PAUSE),
+        ("uninstall", "Remove VS Code and Claude Code", "/usr/libexec/steel-os-ai-coding uninstall" + PAUSE),
+    ],
+))
+
 # Steel & Code Forge (STEEL-25): a one-click entry once its public package
 # address is in packages/forge-source.txt; hidden while that file is empty.
 FORGE_SOURCE = os.path.join(os.path.dirname(os.path.abspath(APPS_FILE)), "forge-source.txt")
