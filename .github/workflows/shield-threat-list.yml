@@ -82,3 +82,31 @@ jobs:
           sudo apt-get install -y -qq rclone >/dev/null
           rclone copyto --s3-no-check-bucket --retries 5 out/steel-shield-extra.hsb \
             "S3:${{ secrets.S3_BUCKET_NAME }}/shield/steel-shield-extra.hsb"
+
+      - name: Tell Discord if this failed
+        # Posts in #reports. Needs the DISCORD_REPORTS_WEBHOOK secret (the same
+        # webhook the site uses for reports).
+        if: failure()
+        env:
+          HOOK: ${{ secrets.DISCORD_REPORTS_WEBHOOK }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        shell: bash
+        run: |
+          if [[ -z "${HOOK:-}" ]]; then
+            echo "No DISCORD_REPORTS_WEBHOOK secret; not posting."
+            exit 0
+          fi
+          python3 - <<'PYEOF'
+          import json, os, urllib.request
+          body = ("⚠️ **The Steel Shield threat list didn't update today.**"
+                  "\nPCs keep the last good list until this is fixed."
+                  f"\nDetails: <{os.environ['RUN_URL']}>")
+          data = json.dumps({"content": body, "username": "Steel OS", "allowed_mentions": {"parse": []}}).encode()
+          req = urllib.request.Request(os.environ["HOOK"], data=data,
+                                       headers={"Content-Type": "application/json", "User-Agent": "steel-os-build"})
+          try:
+              with urllib.request.urlopen(req, timeout=30) as r:
+                  print("Posted on Discord:", r.status)
+          except Exception as e:  # noqa: BLE001
+              print("Discord did not take the alert:", e)
+          PYEOF
