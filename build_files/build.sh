@@ -721,6 +721,9 @@ chmod 0755 /usr/libexec/steel-os-update-notice /usr/libexec/steel-os-signed-upda
     /usr/libexec/steel-os-update-retry
 systemctl enable steel-os-app-updates.timer steel-os-signed-updates.service \
     steel-os-urgent-update.timer steel-os-night-restart.timer
+# The anonymous weekly check-in, for the active PCs number on steel-os.org.
+chmod 0755 /usr/libexec/steel-os-checkin
+systemctl enable steel-os-checkin.timer
 systemctl --global enable steel-os-app-updates.timer steel-os-update-notice.timer steel-os-night-restart.timer
 # Restart at night to finish an update (T, 2026-10-18), and "Update now" in
 # the Portal without a password or terminal: polkit lets an administrator at

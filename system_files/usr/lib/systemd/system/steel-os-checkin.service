@@ -1,0 +1,13 @@
+# Steel OS: the anonymous weekly check-in. Not in the live session of the
+# installer, so trying Steel OS without installing doesn't count as a PC.
+[Unit]
+Description=Steel OS anonymous weekly check-in
+Wants=network-online.target
+After=network-online.target
+ConditionKernelCommandLine=!rd.live.image
+
+[Service]
+Type=oneshot
+Nice=19
+StateDirectory=steel-os-checkin
+ExecStart=/usr/libexec/steel-os-checkin

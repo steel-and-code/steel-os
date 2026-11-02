@@ -285,9 +285,10 @@ jobs:
 
           # Tiny files Steel Shield fetches as count-only pings (a scam
           # reported, a threat caught, a sample shared, a standalone install's
-          # first start); the website counts those fetches like it counts
-          # installer downloads. Never cached, so every ping reaches R2.
-          for p in scam-reported threat-caught sample-shared shield-installed; do
+          # first start) and Steel OS PCs fetch for the weekly check-in; the
+          # website counts those fetches like it counts installer downloads.
+          # Never cached, so every ping reaches R2.
+          for p in scam-reported threat-caught sample-shared shield-installed pc-new pc-active; do
             printf 'ok\n' > "$RUNNER_TEMP/$p"
             rclone copyto --s3-no-check-bucket --retries 5 \
               --header-upload "Cache-Control: no-store" "$RUNNER_TEMP/$p" "S3:$B/ping/$p"
