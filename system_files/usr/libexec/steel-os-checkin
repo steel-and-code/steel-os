@@ -1,0 +1,28 @@
+#!/usr/bin/bash
+# Steel OS: count active PCs ourselves, a day after they happen rather than two
+# weeks later from Fedora (T, 2026-11-02). Each PC fetches a tiny file once a
+# week, and once ever on its first start; the website's daily count of those
+# fetches is the number. No account, no id, nothing about the computer.
+#
+# The timer wakes this daily, so a PC that is only on one day a week still
+# counts. The stamps here stop it sending twice, and a failed send tries again.
+# To turn it off: sudo systemctl disable --now steel-os-checkin.timer
+
+set -uo pipefail
+
+PING_URL="https://downloads.steel-os.org/ping"
+STATE="${STATE_DIRECTORY:-/var/lib/steel-os-checkin}"
+
+ping_count() { # ping_count pc-new|pc-active
+    curl --proto '=https' -fsS -m 20 -o /dev/null -H "Cache-Control: no-cache" "$PING_URL/$1?t=$(date +%s)"
+}
+
+if [[ ! -f "$STATE/first-start" ]]; then
+    ping_count pc-new && date -u +%F > "$STATE/first-start"
+fi
+
+week="$(date -u +%G-W%V)"
+if [[ "$(cat "$STATE/week" 2>/dev/null)" != "$week" ]]; then
+    ping_count pc-active && echo "$week" > "$STATE/week"
+fi
+exit 0

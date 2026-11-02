@@ -1,0 +1,13 @@
+# Steel OS: daily, and soon after starting up. The script itself sends at most
+# once a week.
+[Unit]
+Description=Steel OS anonymous weekly check-in, daily wake
+
+[Timer]
+OnBootSec=15min
+OnUnitActiveSec=1d
+RandomizedDelaySec=1h
+Persistent=true
+
+[Install]
+WantedBy=timers.target
