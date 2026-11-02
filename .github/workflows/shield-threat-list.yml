@@ -51,9 +51,8 @@ jobs:
           fi
           mkdir -p out
           curl -fsSL https://downloads.steel-os.org/shield/steel-shield-extra.hsb -o previous.hsb || : > previous.hsb
-          curl -fsSL -H "Auth-Key: ${ABUSECH_AUTH_KEY}" \
-            https://bazaar.abuse.ch/export/txt/sha256/recent/ -o recent.txt
-          grep -Eo '^[0-9a-f]{64}' recent.txt | sed 's/$/:*:SteelShield.Extra.MalwareBazaar:73/' > new.hsb
+          curl -fsSL "https://mb-api.abuse.ch/v2/files/exports/${ABUSECH_AUTH_KEY}/recent.csv" -o recent.csv
+          grep -v '^#' recent.csv | grep -Eo '\b[0-9a-f]{64}\b' | sed 's/$/:*:SteelShield.Extra.MalwareBazaar:73/' > new.hsb
           echo "New fingerprints: $(wc -l < new.hsb)"
           cat previous.hsb new.hsb | grep -E '^[0-9a-f]{64}:\*:[A-Za-z0-9._-]+:73$' \
             | awk '!seen[$0]++' | tail -n 300000 > out/steel-shield-extra.hsb
