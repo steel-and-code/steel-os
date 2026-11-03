@@ -24,7 +24,7 @@ Website and downloads: **[steel-os.org](https://steel-os.org)**.
 
 | | |
 |---|---|
-| **Safe updates** | The whole system updates as one tested image, automatically every Tuesday at 4 am. If an update ever goes wrong, pick the previous version in the boot menu. |
+| **Safe updates** | The whole system updates as one tested image, automatically every Tuesday just after midnight. If an update ever goes wrong, pick the previous version in the boot menu. |
 | **Easy like Windows** | KDE Plasma desktop, windows that cascade, a start menu in plain English ("Web Browser (Firefox)"), printers and network PCs found without a terminal. |
 | **Plays games** | Steam, Proton, Lutris and controller support built in. |
 | **Apps that just install** | LibreOffice, Firefox, Obsidian and Zed come pre-installed. Chrome, Slack, Zoom, Discord, OBS Studio, Kdenlive, Moonlight and more are one click away. |

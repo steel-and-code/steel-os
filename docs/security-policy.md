@@ -15,7 +15,7 @@ happens when a fix can't wait.
 | Fedora publishes a fix | Usually within days of the upstream fix |
 | Bazzite rebuilds its `stable` image with it | Bazzite's regular schedule |
 | Steel OS rebuilds all three editions from the newest Bazzite `stable` | Every day at 10:05 UTC, and after every merged change. Every image is signed |
-| PCs download the new system | **Every Tuesday at 4 am**, or at the next start if the PC was off |
+| PCs download the new system | **Every Tuesday just after midnight**, or at the next start if the PC was off |
 | The new system takes effect | At the next restart. Steel OS shows "Restart to finish updating" |
 | Apps (Flatpaks), including Firefox | **Every day**, in the background, with no restart |
 

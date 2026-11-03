@@ -1,4 +1,4 @@
-# Steel Shield (STEEL-53): weekly scan, Tuesday afternoon (after the 4 am
+# Steel Shield (STEEL-53): weekly scan, Tuesday afternoon (after the midnight
 # update), or soon after the next start if the PC was off.
 [Unit]
 Description=Steel Shield: weekly scan

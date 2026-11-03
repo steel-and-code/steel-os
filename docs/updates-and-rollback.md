@@ -15,7 +15,7 @@ Fedora and Bazzite publish fixes
 Steel OS image rebuilt automatically every day from Bazzite stable,
 and after every merged change (GitHub Actions; signed)
         │
-Each machine downloads the newest image in the background on Tuesday at 4 am
+Each machine downloads the newest image in the background on Tuesday just after midnight
         │
 The new image takes effect at the next restart
         │
@@ -25,7 +25,7 @@ The previous image stays in the boot menu
 - **One image, not hundreds of packages.** The whole operating system is one
   tested image. An update replaces it as a unit, so a machine is never left
   half-updated.
-- **When:** every **Tuesday at 4 am** local time. If the machine was off, the
+- **When:** every **Tuesday just after midnight** local time. If the machine was off, the
   update runs at the next boot. A random delay of up to 15 minutes spreads the
   load. Set in `system_files/etc/systemd/system/uupd.timer.d/steel-os-tuesday.conf`.
 - **What:** the system image, Flatpak apps and firmware, in one run of
@@ -70,7 +70,7 @@ folder are kept.
 ## How to test (in a VM)
 
 1. `systemctl list-timers uupd.timer` shows the next run on a Tuesday at about
-   4 am.
+   midnight.
 2. Run `sudo bootc upgrade` and restart. `sudo bootc status` shows the new
    image booted and the old one as the rollback image.
 3. Restart and pick the previous entry in the boot menu. The older image starts,

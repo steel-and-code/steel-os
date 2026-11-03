@@ -26,7 +26,7 @@ yad --help-all 2>/dev/null | grep -q -- '--css' && [[ -r /usr/share/steel-os/pro
 log="$(mktemp)"
 since="$(date '+%Y-%m-%d %H:%M:%S')"
 # An update may already be running: the Tuesday one starts when a laptop
-# that slept through 4 am wakes up, and a second one would only fail with
+# that slept through midnight wakes up, and a second one would only fail with
 # "could not acquire lock" (T's wife's laptop, STEEL-81, 2026-10-20). Then
 # this window follows the running update instead of starting another.
 running=""
