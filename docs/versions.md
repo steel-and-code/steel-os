@@ -1,22 +1,24 @@
 # Steel OS version numbers
 
-Every Steel OS build has a version like **0.5.3**, and every merge to
-`master` counts one up. The last number rolls over after 9:
+Every Steel OS build has a version like **1.3.12**, and every merge to
+`master` counts one up. The last number rolls over after 999:
 
-0.4.8, 0.4.9, **0.5.0**, 0.5.1 ... 0.9.9, **1.0.0**, 1.0.1 ... 1.9.9, **2.0.0**
+1.3.0, 1.3.1 ... 1.3.999, **1.4.0**, 1.4.1 ... 1.9.999, **2.0.0**
 
-Every number rolls over after 9, and the middle one rolls into the first:
-0.9.9 is followed by 1.0.0 and 1.9.9 by 2.0.0, never 0.10.0.
+The middle number rolls over after 9 into the first: 1.9.999 is followed by
+2.0.0, never 1.10.0. Until 1.3 the last number rolled over after 9 (1.2.9 was
+followed by 1.3.0); those earlier versions keep their numbers.
 
 - The `VERSION` file at the top of this repository holds the starting point
-  (now `0.4`). Counting starts from it: the first build after `VERSION`
-  changes is that number with `.0` (for example 1.0.0).
+  (now `1.3`). Counting starts from it: the first build after `VERSION`
+  changes is that number with `.0` (for example 1.3.0).
 - `VERSION` can also be raised by hand (a one-line pull request) to start a
-  new series at once, as was done for 1.0 on 20 October 2026.
+  new series at once, as was done for 1.0 on 20 October 2026 and 1.3 on
+  3 November 2026.
 
-The version shows in **About this System** ("Steel OS 0.5.3"), on the
+The version shows in **About this System** ("Steel OS 1.3.12"), on the
 installer's information panel, in `/usr/share/steel-os/version`, in the
-installer's file name (`steel-os-0.5.3-x86_64.iso`) and `.image.txt` record,
+installer's file name (`steel-os-1.3.12-x86_64.iso`) and `.image.txt` record,
 and in the list of builds on steel-os.org/download.
 
 A daily rebuild on Bazzite's newest base (Fedora's updates) **keeps the
