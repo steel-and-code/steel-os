@@ -33,7 +33,7 @@ the polish a Windows user expects.
   Chrome, GIMP, VS Code, Antigravity and more), and system tools.
 - **Virtual machines.** Virtual Machine Manager works right after a one-click
   install.
-- **Updates.** Automatic every Tuesday at 4 am, with the previous version kept
+- **Updates.** Automatic every Tuesday just after midnight, with the previous version kept
   in the boot menu. See [updates-and-rollback.md](updates-and-rollback.md).
 - **One installer for every PC.** Three editions (AMD and Intel, NVIDIA RTX
   and GTX 16, older NVIDIA GTX 900 and 1000); each PC moves to the right one by
