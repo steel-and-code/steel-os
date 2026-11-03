@@ -1,7 +1,8 @@
 """Write release-notes.json: what changed in each Steel OS version.
 
 Every merge to master is one version (see docs/versions.md): the n-th merge
-since VERSION last changed is MAJOR.(MINOR + n // 10).(n % 10). The title of
+since VERSION last changed is MAJOR.(MINOR + n // 1000).(n % 1000), or n // 10
+and n % 10 for the series before 1.3. The title of
 each version is its pull request's title (the second paragraph of GitHub's
 merge commit message), which is written in plain English. A daily rebuild (a
 plain commit on master) keeps the version: it is listed as a "rebuilt" date
@@ -27,10 +28,13 @@ current = sys.argv[2] if len(sys.argv) > 2 else None
 
 
 def version_of(major, minor, n):
-    """The n-th merge since VERSION was set to major.minor: every number rolls over
-    after 9, the middle one into the first (0.9.9 -> 1.0.0)."""
-    mt = minor + n // 10
-    return f"{major + mt // 10}.{mt % 10}.{n % 10}"
+    """The n-th merge since VERSION was set to major.minor. From 1.3 on the last
+    number rolls over after 999 (1.3.999 -> 1.4.0, T 2026-11-03); the series
+    before it rolled over after 9, and keep their numbers. The middle number
+    always rolls into the first after 9 (1.9.999 -> 2.0.0)."""
+    step = 1000 if (major, minor) >= (1, 3) else 10
+    mt = minor + n // step
+    return f"{major + mt // 10}.{mt % 10}.{n % step}"
 
 
 def merges(rng):
