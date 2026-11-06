@@ -1,3 +1,3 @@
-ghcr.io/ublue-os/bazzite-nvidia-open:stable sha256:1afdfa96a8011ae269e8a79dc550e1024fb953f19b3a0483c6522ad4d5d1f3d1
-ghcr.io/ublue-os/bazzite-nvidia:stable sha256:2df4b1407fb79ce604bb86a43f96a04a21a65107fbb15ce963f2920610c4bd48
-ghcr.io/ublue-os/bazzite:stable sha256:9ef3035588c6760e96c5064a1920db35c012c6c8e7d20ac6c1c31a04ed682e0b
+ghcr.io/ublue-os/bazzite-nvidia-open:stable sha256:9c3c4df94a7731238021549ed3fc951c3ae5e1fee37667d16754f37ae0f73134
+ghcr.io/ublue-os/bazzite-nvidia:stable sha256:1d86fe5e788d651827757cbcdb01b17b1b5727995c0691419d6136b28cd50c97
+ghcr.io/ublue-os/bazzite:stable sha256:3c67436e214fe34be11565cd3f0065789b1f107984ab247ca6cea4bcd2c94597
