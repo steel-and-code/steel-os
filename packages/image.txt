@@ -65,11 +65,10 @@ kdenetwork-filesharing
 
 # VPN (STEEL-39): import a VPN from System Settings with no terminal.
 # WireGuard is built into NetworkManager and Plasma; these add OpenVPN (most
-# VPN services), Cisco AnyConnect and compatible (OpenConnect), and Cisco
-# IPsec (vpnc), the common work VPNs.
+# VPN services) and Cisco AnyConnect and compatible (OpenConnect), the common
+# work VPNs. Fedora 45 dropped Plasma's Cisco IPsec (vpnc) add-on.
 plasma-nm-openvpn
 plasma-nm-openconnect
-plasma-nm-vpnc
 
 # Gaming devices (STEEL-32). Bazzite already includes the drivers for the Xbox
 # wireless adapter (xone), Razer devices (openrazer), and Thrustmaster,
