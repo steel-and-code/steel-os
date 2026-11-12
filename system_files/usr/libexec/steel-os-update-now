@@ -10,6 +10,16 @@
 set -uo pipefail
 
 TITLE="Update Steel OS"
+
+# The installer USB's live session has nothing to update: Steel OS is not
+# installed yet, and the update only fails with "System not booted via bootc".
+if grep -qw rd.live.image /proc/cmdline; then
+    yad --info --title="$TITLE" --window-icon=steel-os --buttons-layout=center --button="OK:0" \
+        --text="<b>Install Steel OS first.</b>\n\nThis is the installer USB: nothing is installed on this PC yet.\nAfter you install, Steel OS updates itself every Tuesday." 2>/dev/null \
+        || echo "Install Steel OS first: the installer USB cannot be updated."
+    exit 0
+fi
+
 command -v yad >/dev/null 2>&1 || { systemctl start uupd.service; exit; }
 
 # The manual-update service when the system has it (Bazzite's uupd-manual:

@@ -1,0 +1,51 @@
+#!/usr/bin/bash
+# Steel OS: a plain-English box when the install stops with an error.
+#
+# The installer's own "Installation failed" box asks for a Bugzilla API key
+# (Fedora's bug tracker), which means nothing to a home user. This script,
+# started with the live desktop, watches the installer's logs for a failed
+# install and shows on top of it what to do next, with Report a problem.
+#
+# A read error ("Input/output error") means the PC could not read part of
+# Steel OS off the USB stick (a bad copy, a worn stick or a loose port), the
+# most common cause (a 1.3.1 install, November 2026).
+
+set -uo pipefail
+
+LOGS=(/tmp/anaconda.log /tmp/packaging.log /tmp/program.log /tmp/storage.log)
+# Every critical installer error is an org.fedoraproject.Anaconda.*InstallationError;
+# NonCriticalInstallationError is a warning the installer carries on after.
+failure() {
+    sudo grep -hsE '[A-Za-z]*InstallationError|Installation of the system failed' "${LOGS[@]}" 2>/dev/null \
+        | grep -v 'NonCritical' | tail -n 3
+}
+
+found=""
+until [[ -e /run/steel-os-installed ]]; do
+    found="$(failure)"
+    [[ -n "$found" ]] && break
+    sleep 5
+done
+[[ -z "$found" ]] && exit 0
+
+if sudo grep -qsiE 'input/output error|I/O error' "${LOGS[@]}" 2>/dev/null; then
+    text="<big><b>The USB stick couldn't be read</b></big>\n
+The installer asked the USB stick for part of Steel OS and got nothing back.
+This is almost always the stick or the port, not your PC or the disk you chose.\n
+1. Write Steel OS to the USB stick again.
+2. Plug it into a USB port on the <b>back</b> of the PC.
+3. If it stops the same way, use a different USB stick.\n
+Then install again. The disk you chose may be half-written; installing again replaces it."
+else
+    text="<big><b>The installation stopped with an error</b></big>\n
+Steel OS isn't installed yet. Please tell us what happened with
+<b>Report a problem</b>: the details below go with it, so we can fix it.\n
+<tt>$(printf '%s\n' "$found" | cut -c1-120 | sed 's/&/\&amp;/g; s/</\&lt;/g; s/>/\&gt;/g')</tt>"
+fi
+
+yad --on-top --center --buttons-layout=center --title="Installation failed" --image=dialog-warning \
+    --text="$text" \
+    --button="Report a problem:0" --button="Close:1"
+if [[ $? -eq 0 ]]; then
+    /usr/libexec/steel-os-report & disown $!
+fi
