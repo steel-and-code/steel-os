@@ -1,0 +1,15 @@
+{
+  "policies": {
+    "OverrideFirstRunPage": "",
+    "OverridePostUpdatePage": "",
+    "SkipTermsOfUse": true,
+    "DontCheckDefaultBrowser": true,
+    "UserMessaging": {
+      "SkipOnboarding": true,
+      "MoreFromMozilla": false,
+      "FeatureRecommendations": false,
+      "ExtensionRecommendations": false,
+      "Locked": false
+    }
+  }
+}

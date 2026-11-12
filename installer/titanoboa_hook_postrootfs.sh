@@ -107,7 +107,7 @@ run0 --user=liveuser yad \
     --no-buttons \
     --width=600 \
     --height=400 \
-    --text="An error occurred during installation. Please report this issue to the developers." \
+    --text="The installation stopped with an error. Steel OS is not installed yet. Please send this with Report a problem in the start menu." \
     < /tmp/anaconda.log
 %end
 
