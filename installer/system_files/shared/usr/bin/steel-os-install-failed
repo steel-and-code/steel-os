@@ -6,9 +6,11 @@
 # started with the live desktop, watches the installer's logs for a failed
 # install and shows on top of it what to do next, with Report a problem.
 #
-# A read error ("Input/output error") means the PC could not read part of
-# Steel OS off the USB stick (a bad copy, a worn stick or a loose port), the
-# most common cause (a 1.3.1 install, November 2026).
+# A read error ("Input/output error") or a failed file check ("file integrity
+# checksum failed") means part of Steel OS on the USB stick is missing or
+# damaged: an incomplete download, a bad copy, a worn stick or a loose port.
+# These are the most common causes (1.3.1 and 1.3.5 installs, November 2026;
+# one was a download cut short by 956 MB).
 
 set -uo pipefail
 
@@ -28,13 +30,15 @@ until [[ -e /run/steel-os-installed ]]; do
 done
 [[ -z "$found" ]] && exit 0
 
-if sudo grep -qsiE 'input/output error|I/O error' "${LOGS[@]}" 2>/dev/null; then
-    text="<big><b>The USB stick couldn't be read</b></big>\n
-The installer asked the USB stick for part of Steel OS and got nothing back.
-This is almost always the stick or the port, not your PC or the disk you chose.\n
-1. Write Steel OS to the USB stick again.
-2. Plug it into a USB port on the <b>back</b> of the PC.
-3. If it stops the same way, use a different USB stick.\n
+if sudo grep -qsiE 'input/output error|I/O error|integrity checksum failed|checksum mismatch' "${LOGS[@]}" 2>/dev/null; then
+    text="<big><b>Part of Steel OS on the USB stick is missing or damaged</b></big>\n
+The installer couldn't read part of Steel OS correctly from the USB stick.
+This is almost always the download, the stick or the port, not your PC or the disk you chose.\n
+1. Download Steel OS again from steel-os.org/download: a download that stopped
+   early looks finished but is missing part of Steel OS.
+2. Write it to the USB stick again, ideally with Fedora Media Writer, which checks the stick.
+3. Plug the stick into a USB port on the <b>back</b> of the PC.
+4. If it stops the same way, use a different USB stick.\n
 Then install again. The disk you chose may be half-written; installing again replaces it."
 else
     text="<big><b>The installation stopped with an error</b></big>\n

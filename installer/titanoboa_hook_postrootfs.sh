@@ -13,6 +13,27 @@ dnf install -qy --enable-repo=fedora-cisco-openh264 --allowerasing firefox anaco
 
 mkdir -p /var/lib/rpm-state # Needed for Anaconda Web UI
 
+# Steel OS: no Fedora Bugzilla in the installer's "Installation failed" box.
+# The installer asks for a Bugzilla API key whenever the live system's
+# os-release names bugzilla.redhat.com as its BUG_REPORT_URL, and the install
+# above can bring Fedora's release files back. Point every os-release copy at
+# steel-os.org and drop the Bugzilla product lines; the box then shows the
+# error and steel-os.org, and steel-os-install-failed adds Report a problem.
+for f in /usr/lib/os-release /etc/os-release; do
+    [[ -f "$f" && ! -L "$f" ]] || continue
+    sed -i -e '/^REDHAT_BUGZILLA_/d' -e '/^REDHAT_SUPPORT_/d' "$f"
+    if grep -q '^BUG_REPORT_URL=' "$f"; then
+        sed -i 's|^BUG_REPORT_URL=.*|BUG_REPORT_URL="https://steel-os.org"|' "$f"
+    else
+        echo 'BUG_REPORT_URL="https://steel-os.org"' >>"$f"
+    fi
+done
+if grep -rqs 'bugzilla' /usr/lib/os-release /etc/os-release; then
+    echo "Steel OS: os-release still names Bugzilla; the installer would ask for a Bugzilla key" >&2
+    exit 1
+fi
+grep -h '^BUG_REPORT_URL=' /usr/lib/os-release /etc/os-release
+
 # Steel OS (STEEL-35): "Use entire disk" preselected and "Finish" on the last
 # installer screen. See installer/patch-anaconda-webui.py.
 python3 /src/patch-anaconda-webui.py /usr/share/cockpit/anaconda-webui
